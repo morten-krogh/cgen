@@ -35,7 +35,7 @@ char *trim(char *str)
 
 struct conf_info {
 	char *template_file;
-	char *heder_file;
+	char *header_file;
 	char *source_file;
 	char **keys;
 	char **values;
@@ -67,25 +67,28 @@ struct conf_info parse_conf_file(char *conf_file)
 		left = trim(left);
 		right = trim(right);
 		
-		
-		printf("left = %s\n", left);
-		printf("right = %s\n", right);
-		
-		
-		
-		
-		printf("Length of line is %zu\n", strlen(line));
+//		printf("left = %s\n", left);
+//		printf("right = %s\n", right);
+
+		if (strcmp(left, "template-file") == 0) {
+			conf_info.template_file = strdup(right);
+		} else if (strcmp(left, "header-file") == 0) {
+			conf_info.header_file = strdup(right);
+		} else if (strcmp(left, "source-file") == 0) {
+			conf_info.source_file = strdup(right);
+		} else {
+			conf_info.keys = realloc(conf_info.keys, conf_info.nkeys + 1);
+			conf_info.keys[conf_info.nkeys] = strdup(left);
+			conf_info.values = realloc(conf_info.values, conf_info.nkeys + 1);
+			conf_info.values[conf_info.nkeys] = strdup(right);
+			conf_info.nkeys++;
+		}
 	}
 
 	if (!feof(file)) {
 		fprintf(stderr, "There was a problem reading the conf file\n");
 		exit(1);
 	}
-
-	
-
-
-
 
 	fclose(file);
 	
@@ -110,7 +113,7 @@ int main(int argc, char **argv)
 
 	struct conf_info conf_info = parse_conf_file(argv[1]);
 	
-	
+	printf("Result: %s\n", conf_info.source_file);
 
 
 
