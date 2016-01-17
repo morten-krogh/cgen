@@ -47,7 +47,7 @@ struct conf_info {
 	size_t nkeys;
 };
 
-struct conf_info parse_conf_file(char *conf_file)
+struct conf_info parse_conf_file(const char *conf_file)
 {
 	struct conf_info conf_info = {NULL, NULL, NULL, NULL, 0};
 
@@ -106,20 +106,20 @@ char *replace_key_with_value(const char *str, const char *key, const char *value
 
 	char *result = malloc(10);
 
-
-
 	return result;
 }
 
-
-
-
-
-
-
-
-
-
+char *replace_all_keys_with_values(const char *str, const struct key_value *key_values, size_t nkeys)
+{
+	if (nkeys == 0) return strdup(str);
+	char *current_str = replace_key_with_value(str, key_values[0].key, key_values[0].value);
+	for (size_t i = 1; i < nkeys; i++) {
+		char *next_str = replace_key_with_value(current_str, key_values[i].key, key_values[i].value);
+		free(current_str);
+		current_str = next_str;
+	}
+	return current_str;
+}
 
 enum specialization_state {
 	state_none,
