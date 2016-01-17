@@ -12,19 +12,19 @@ typedef int TYPE;
 
 #include <stddef.h>
 
-// cgen source file include
-
-#include <stdlib.h>
-
-// cgen public types
-
 struct vector_NAME {
        TYPE *data;
        size_t size;
        size_t capacity;
 };
 
-// cgen public functions
+
+
+// cgen source file include
+
+#include <stdlib.h>
+
+// cgen header file declarations and source file definitions
 
 struct vector_NAME *vector_NAME_init(struct vector_NAME *vec)
 {
@@ -62,14 +62,6 @@ struct vector_NAME *vector_NAME_append(struct vector_NAME *vec, TYPE t)
 	
 	return vec;
 }
-
-
-
-
-// cgen private types
-
-// cgen private functions
-
 
 
 
