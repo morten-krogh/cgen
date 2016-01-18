@@ -6,7 +6,7 @@
 // Syntactically correct cgen template files are easier to write in standard editors and can be syntactically verified by a c compiler.
 typedef int TYPE;
 
-// cgen header file include
+// cgen header
 
 #include <stddef.h>
 
@@ -16,10 +16,13 @@ struct vector_NAME {
        size_t capacity;
 };
 
-// cgen source file include
+struct vector_NAME *vector_NAME_init(struct vector_NAME *vec);
+void vector_NAME_free(struct vector_NAME *vec);
+struct vector_NAME *vector_NAME_set_capacity(struct vector_NAME *vec, size_t capacity);
+struct vector_NAME *vector_NAME_append(struct vector_NAME *vec, TYPE t);
+// cgen source
 
 #include <stdlib.h>
-// cgen header file declarations and source file definitions
 
 struct vector_NAME *vector_NAME_init(struct vector_NAME *vec)
 {
@@ -57,8 +60,3 @@ struct vector_NAME *vector_NAME_append(struct vector_NAME *vec, TYPE t)
 	
 	return vec;
 }
-
-
-
-
-

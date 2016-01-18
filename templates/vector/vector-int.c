@@ -40,8 +40,3 @@ struct vector_int *vector_int_append(struct vector_int *vec, int t)
 	
 	return vec;
 }
-
-
-
-
-
