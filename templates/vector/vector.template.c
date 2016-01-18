@@ -16,12 +16,9 @@ struct vector_NAME {
        size_t capacity;
 };
 
-
-
 // cgen source file include
 
 #include <stdlib.h>
-
 // cgen header file declarations and source file definitions
 
 struct vector_NAME *vector_NAME_init(struct vector_NAME *vec)
