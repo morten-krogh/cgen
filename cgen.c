@@ -80,11 +80,11 @@ struct conf_info parse_conf_file(const char *conf_file)
 		left = trim(left);
 		right = trim(right);
 		
-		if (strcmp(left, "template-file") == 0) {
+		if (strcmp(left, "template") == 0) {
 			conf_info.template_file = strdup(right);
-		} else if (strcmp(left, "header-file") == 0) {
+		} else if (strcmp(left, "header") == 0) {
 			conf_info.header_file = strdup(right);
-		} else if (strcmp(left, "source-file") == 0) {
+		} else if (strcmp(left, "source") == 0) {
 			conf_info.source_file = strdup(right);
 		} else {
 			conf_info.key_values = realloc(conf_info.key_values, (conf_info.nkeys + 1) * sizeof(struct key_value));
