@@ -3,7 +3,6 @@
 #include "vector_int.h"
 
 #include <stdlib.h>
-#include <stdio.h> // remove again
 
 struct vector_int *vector_int_init(struct vector_int *vec)
 {
@@ -26,7 +25,6 @@ struct vector_int *vector_int_set_capacity(struct vector_int *vec, size_t capaci
 		vec->data = data;
 		vec->capacity = capacity;
 		if (vec->size > capacity) vec->size = capacity;
-		printf("New capacity %zu\n", capacity);
 	}
 
 	return vec;

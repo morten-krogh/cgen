@@ -23,7 +23,6 @@ struct vector_NAME *vector_NAME_append(struct vector_NAME *vec, TYPE t);
 // cgen source
 
 #include <stdlib.h>
-#include <stdio.h> // remove again
 
 struct vector_NAME *vector_NAME_init(struct vector_NAME *vec)
 {
@@ -46,7 +45,6 @@ struct vector_NAME *vector_NAME_set_capacity(struct vector_NAME *vec, size_t cap
 		vec->data = data;
 		vec->capacity = capacity;
 		if (vec->size > capacity) vec->size = capacity;
-		printf("New capacity %zu\n", capacity);
 	}
 
 	return vec;
