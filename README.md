@@ -9,6 +9,99 @@ cgen is an open source project licensed with the MIT license. I encourage others
 
 # Motivation
 
+The C language is a great language. However, it has some drawbacks. One drawback is the lack of statically typed data structures and algorithms.
+
+Suppose for example a program has a type
+
+```
+struct customer {
+  unsigned long id;
+  char name[32];
+  int age;
+}
+```
+
+The program might need a container of customers.
+
+Later, the program might get a product type
+
+```
+struct product {
+  unsigned long id;
+  char name[128];
+  double price;
+}
+```
+
+and need a container of products.
+
+Several options are available to C developers.
+
+### First approach
+
+The first approach in C is to allocate a large array to start with
+
+```
+struct customer customers[10000];
+struct product products[50000];
+```
+This approach is bad because the program either wastes memory or must exit at some point.
+
+### Second approach
+
+A second approach is to litter the code with malloc/realloc logic
+
+```
+if (i >= capacity) {
+  customers = realloc(customers, 2 * capacity);
+}
+customers[i] = customer;
+```
+
+All the allocation code must be repeated for the products and all other future items types.
+
+### Third approach
+
+A third approach is to define a general data structure based on void**
+```
+void **customers;
+void **products;
+```
+This approach will avoid the code duplication. However, lots of casts must be performed and static typing by the compiler will not be able to catch errors as easily. Also casts are ugly in my opinion. Furthermore, the arrays do not contain the objects themselves but just pointers. This leads to larger memory consumption, and worse cache utilization.
+
+### Fourth approach
+
+A fourth approach is to code all the container logic in preprocessor macros. Code to insert a customer
+
+```
+INSERT_CUSTOMER(customer, customers)
+```
+
+would be a macro defined in some header.
+
+In my opinion, macros reduce code readability. But more importantly, the code is expanded and compiled multiple times. At every code use, and at every code change, the macros must be expanded and compiled. The resulting binary executable becomes larger than necessary, and development time becomes slower.
+
+### Fifth approach
+
+A fifth approach is to close the eyes and write more or less identical code for a vector of custmoers, a vector of products, etc. This approach works quite well if done properly. However, the error rate is high due to sloppy copy/paste and changes in one version of the code must be updated manually everywhere else. It is also boring to write and maintain such code which increases the error rate.
+
+### Sixth approach
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+For instance,
 
 
 To be filled out
@@ -33,34 +126,3 @@ Section 3 starts after a line
 
 The first section, which is the current section, can be used for commenting
 thew template file.
-
-> Hello
-How are you
-
-xdkdjkdsjk
-
-*italic*
-**bold**
-
-* item 1
-* item 2
-
-dkldkdsl
-
-- item a
-- item b
-
-fkjfkjf
-
-1. item 1.
-2. item 2.
-
-dkdkjdf
-
-```
-struct foo {
-  int a;  
-  int b;
-}
-```
-[amberbio](www.amberbio.com)
