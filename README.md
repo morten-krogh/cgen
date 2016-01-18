@@ -9,6 +9,62 @@ just one template, a vector also known as a dynamic array. The plan is to includ
 cgen is an open source project licensed with the MIT license. I encourage others to join in order to
 improve the template format, and add templates for more data structures and algorithms.
 
+# Installation
+
+The cgen program is a single C program, cgen.c. 
+
+make (produces the executable cgen)
+make install (copies cgen to /usr/local. requires root access)
+
+cgen can be installed enywhere by a simle copy.
+
+# Directories
+
+The templates are located in the templates directory. See the vector directory for an example.
+
+
+# Usage
+
+Go to a template directory such as templates/vector.
+
+Type
+
+cgen conf-file-name
+
+or 
+
+../../cgen conf-file-name
+
+The conf-file-name is the file name of the configuration file described below.
+The cgen program will produce two output files or exirt with an error message to std error.
+The two output files are a .h and .c file. Their names are specified in the configuration file.
+
+#### Example
+
+cd templates/vector
+../../cgen vector_int.conf
+
+These two files will be produced 
+
+vector_int.h
+vector_int.c
+
+# Configuration file format
+
+
+
+
+
+
+# Template file format
+
+
+
+
+# Functionality
+
+
+
 # Motivation
 
 The C language is a great language. However, it has some drawbacks. One drawback is the lack of
@@ -116,16 +172,12 @@ There is no memory hit by indirection.
 The compiler can statically check the code and casts are avoided.
 
 
-# Other programming languages
+# Comparison with other programming languages
 
+High level languages, like Javascript and Python, use an approach similar to the void* data structure desribed above.
+The arrays and other containers use indirection and type tags. This approach is the easiest for development purposes. The only downside is loss of performance and higher memory consumption.
 
-
-
-
-
-
-
-
+Languages with generics or templates, like C++, use an approach similar to preprocessor macros. The compiled code is very efficient. The downsides are enhanced compilation times, and a more complicated language. In our opinion the preprocessor or template expander should not be tightly coupled to the main language.  
 
 
 
