@@ -1,4 +1,4 @@
-cflags := -std=c11 -Wpedantic -O0
+cflags := -std=c99 -Wpedantic -O0
 
 prefix := /usr/local
 

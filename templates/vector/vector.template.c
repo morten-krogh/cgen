@@ -1,5 +1,3 @@
-// cgen comments
-
 // This template creates a data structure called vector. A vector is a dynamic array.
 
 // There are two template parameters: NAME and TYPE.
