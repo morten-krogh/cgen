@@ -41,6 +41,7 @@ bool kv_store_NAME_delete(struct kv_store_NAME *store, KEY_TYPE key);
 // cgen source
 
 #include <stdlib.h>
+#include <string.h>
 
 struct kv_store_NAME *kv_store_NAME_init(struct kv_store_NAME *store, int (*compar)(KEY_TYPE key1, KEY_TYPE key2))
 {
@@ -130,7 +131,8 @@ bool kv_store_NAME_delete(struct kv_store_NAME *store, KEY_TYPE key)
 	kv_store_NAME_search(store, key, &lower, &upper);
 
 	if (lower == upper) {
-		
+		memmove(store->data + lower * sizeof(struct kv_tuple_NAME), store->data + (lower + 1) * sizeof(struct kv_tuple_NAME), (store->size - lower - 1) * sizeof(struct kv_tuple_NAME));
+		store->size--;
 		return true;
 	} else {
 		return false;
