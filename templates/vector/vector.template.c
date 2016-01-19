@@ -1,9 +1,12 @@
-// This template creates a data structure called vector. A vector is a dynamic array.
-
-// There are two template parameters: NAME and TYPE.
-
-// The typedef below is just to make the template file syntactically correct c. It is a cgen comment and will be ignored.
-// Syntactically correct cgen template files are easier to write in standard editors and can be syntactically verified by a c compiler.
+/*
+ * This template creates a data structure called vector. A vector is a dynamic array.
+ *
+ * There are two template parameters: NAME and TYPE.
+ *
+ * The typedef below is just to make the template file syntactically correct c. It is a cgen comment
+ * and will be ignored. Syntactically correct cgen template files are easier to write in standard
+ * editors and can be syntactically verified by a c compiler.
+ */
 typedef int TYPE;
 
 // cgen header
