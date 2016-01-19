@@ -36,7 +36,7 @@ or
 ../../cgen conf-file-name
 
 The conf-file-name is the file name of the configuration file described below.
-The cgen program will produce two output files or exirt with an error message to std error.
+The cgen program will produce two output files or exit with an error message to std error.
 The two output files are a .h and .c file. Their names are specified in the configuration file.
 
 #### Example
@@ -75,7 +75,7 @@ Lines without `=` are ignored. There are three special keys:
 3.  `source` which is the file path of the output `.c` file.
 
 
-All other key, value pairs are used for subsitutions in the template file. In the example above the words
+All other key, value pairs are used for substitutions in the template file. In the example above the words
 `NAME` and `TYPE` will be replaced by `int` in the template file. 
 
 
@@ -95,7 +95,10 @@ indentation and syntax coloring will be correct. Also, template files can be syn
 
 ```cc -fsyntax-only template-file```
 
-In order to make the template file valid C two things must be done. Firstly the cgen comment section should be written as C comments as well. Secondly, unknown types in the header and source sections should be typedefed in the cgen comment section outside c comments. See the `templates/vector/vector.template.c` as an example and note the line
+In order to make the template file valid C two things must be done. Firstly the cgen comment section
+should be written as C comments as well. Secondly, unknown types in the header and source sections
+should be typedefed in the cgen comment section outside c comments. See the
+`templates/vector/vector.template.c` as an example and note the line
 
 ```
 typedef int TYPE;
@@ -115,10 +118,10 @@ cgen configuration-file
 executes the cgen program. The following steps are taken by cgen.
 
  	1. cgen parses the configuration file. The three special keys are found and all other key, value pairs are stored. 
- 	2. cgen parses the temlate file whose path was given in the configuration file.
+ 	2. cgen parses the template file whose path was given in the configuration file.
  	3. The cgen comment section is ignored. 
- 	4. The cgen header section is parsed, subsitutions are made using the key, value pairs from the configuration file, and the output is written to the header file specified in the configuration file.
- 	5. The cgen source section is parsed, subsitutions are made using the key, value pairs from the configuration file, and the output is written to the source file specified in the configuration file.
+ 	4. The cgen header section is parsed, substitutions are made using the key, value pairs from the configuration file, and the output is written to the header file specified in the configuration file.
+ 	5. The cgen source section is parsed, substitutions are made using the key, value pairs from the configuration file, and the output is written to the source file specified in the configuration file.
 	6. The header file is included in the source file as `#include header-file`.
 	7. In case of errors, cgen exits and writes an error message to stderr. The output files could be incomplete in cases of errors and should be discarded.
 
@@ -194,7 +197,10 @@ struct vector {
 insert_item(struct vector vector, void* item);
 ```
 
-This approach will avoid the code duplication. However, lots of casts must be performed and static typing by the compiler will not be able to catch many errors. Also casts are ugly in our opinion. Furthermore, the arrays do not contain the objects themselves but just pointers. This leads to larger memory consumption, and worse cache utilization.
+This approach will avoid the code duplication. However, lots of casts must be performed and static
+typing by the compiler will not be able to catch many errors. Also casts are ugly in our
+opinion. Furthermore, the arrays do not contain the objects themselves but just pointers. This leads
+to larger memory consumption, and worse cache utilization.
 
 ### Preprocessor macros
 
@@ -210,7 +216,11 @@ In our opinion, macros reduce code readability. But more importantly, the code i
 
 ### Manual code duplication
 
-A fifth approach is to close the eyes and write more or less identical code for a vector of customers, a vector of products, etc. This approach works quite well if done properly. However, the error rate is high due to sloppy copy/pasting. Also, changes in one part of the container code must be updated manually everywhere else. It is also boring to write and maintain such code which increases the error rate.
+A fifth approach is to close the eyes and write more or less identical code for a vector of
+customers, a vector of products, etc. This approach works quite well if done properly. However, the
+error rate is high due to sloppy copy/pasting. Also, changes in one part of the container code must
+be updated manually everywhere else. It is also boring to write and maintain such code which
+increases the error rate.
 
 ### Automatic code generation
 
@@ -221,7 +231,9 @@ The biggest disadvantage is that another layer in the development process is nee
 
 In basically every other way, code generation approach is superior.
 
-Compile times are shorter. In most projects, the container logic is updated rarely whereas the user code, such as the vectors of customers and products, are updated regularly. There is no reason to expand and recompile the container logic again and again.
+Compile times are shorter. In most projects, the container logic is updated rarely whereas the user
+code, such as the vectors of customers and products, are updated regularly. There is no reason to
+expand and recompile the container logic again and again.
 
 Changes in the container and algorithm code just needs to be done once.
 
@@ -234,7 +246,12 @@ The compiler can statically check the code and casts are avoided.
 
 # Comparison with other programming languages
 
-High level languages, like Javascript and Python, use an approach similar to the void* data structure desribed above.
-The arrays and other containers use indirection and type tags. This approach is the easiest for development purposes. The only downside is loss of performance and higher memory consumption.
+High level languages, like Javascript and Python, use an approach similar to the void* data
+structure described above.  The arrays and other containers use indirection and type tags. This
+approach is the easiest for development purposes. The only downside is loss of performance and
+higher memory consumption.
 
-Languages with generics or templates, like C++, use an approach similar to preprocessor macros. The compiled code is very efficient. The downsides are enhanced compilation times, and a more complicated language. In our opinion the preprocessor or template expander should not be tightly coupled to the main language.  
+Languages with generics or templates, like C++, use an approach similar to preprocessor macros. The
+compiled code is very efficient. The downsides are enhanced compilation times, and a more
+complicated language. In our opinion the preprocessor or template handler should not be tightly
+coupled to the main language.
