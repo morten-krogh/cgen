@@ -14,7 +14,7 @@ int main(void)
 		vector_int_append(&vec, value);
 	}
 
-	assert(vec.size == 1000);
+	assert(vec.size == N);
 	for (int i = 0; i < N; i++) {
 		assert(vec.data[i] == 10 * i);
 	}

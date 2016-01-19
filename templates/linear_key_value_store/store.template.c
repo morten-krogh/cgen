@@ -37,7 +37,6 @@ void kv_store_NAME_free(struct kv_store_NAME *store);
 VALUE_TYPE *kv_store_NAME_get(struct kv_store_NAME *store, KEY_TYPE key);
 bool kv_store_NAME_put(struct kv_store_NAME *store, KEY_TYPE key, VALUE_TYPE value);
 bool kv_store_NAME_delete(struct kv_store_NAME *store, KEY_TYPE key);
-
 // cgen source
 
 #include <stdlib.h>
@@ -123,7 +122,7 @@ bool kv_store_NAME_put(struct kv_store_NAME *store, KEY_TYPE key, VALUE_TYPE val
 			store->capacity = new_capacity;
 		}
 		if (upper < store->size) {
-			memmove(store->data + (upper + 1) * sizeof(struct kv_tuple_NAME), store->data + upper * sizeof(struct kv_tuple_NAME), (store->size - upper) * sizeof(struct kv_tuple_NAME));
+			memmove(store->data + (upper + 1), store->data + upper, (store->size - upper) * sizeof(struct kv_tuple_NAME));
 		}
 		store->data[upper].key = key;
 		store->data[upper].value = value;
@@ -136,44 +135,22 @@ bool kv_store_NAME_put(struct kv_store_NAME *store, KEY_TYPE key, VALUE_TYPE val
 /* The value is deleted for the key. The bool return value is true if the key was present and false
  * if the key was absent.
  */
+
+#include<stdio.h> // REMOVE
+
 bool kv_store_NAME_delete(struct kv_store_NAME *store, KEY_TYPE key)
 {
 	ptrdiff_t lower;
 	ptrdiff_t upper;
 	kv_store_NAME_search(store, key, &lower, &upper);
+	printf("lower = %zu, upper = %zu, sizeof = %zu\n", lower, upper, sizeof(struct kv_tuple_NAME));
 
+	
 	if (lower == upper) {
-		memmove(store->data + lower * sizeof(struct kv_tuple_NAME), store->data + (lower + 1) * sizeof(struct kv_tuple_NAME), (store->size - lower - 1) * sizeof(struct kv_tuple_NAME));
+		memcpy(store->data + lower, store->data + lower + 1, (store->size - lower - 1) * sizeof(struct kv_tuple_NAME));
 		store->size--;
 		return true;
 	} else {
 		return false;
 	}
 }
-
-/*
-struct vector_NAME *vector_NAME_set_capacity(struct vector_NAME *vec, size_t capacity)
-{
-	TYPE *data;
-	if ((data = realloc(vec->data, capacity * sizeof vec->data)) != NULL) {
-		vec->data = data;
-		vec->capacity = capacity;
-		if (vec->size > capacity) vec->size = capacity;
-	}
-
-	return vec;
-}
-
-struct vector_NAME *vector_NAME_append(struct vector_NAME *vec, TYPE t)
-{
-	if (vec->size == vec->capacity) {
-		size_t new_capacity = 2 * vec->capacity + 1;
-		vector_NAME_set_capacity(vec, new_capacity);
-	}
-
-	vec->data[vec->size] = t;
-	vec->size++;
-	
-	return vec;
-}
-*/
