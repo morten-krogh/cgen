@@ -115,7 +115,19 @@ bool kv_store_NAME_put(struct kv_store_NAME *store, KEY_TYPE key, VALUE_TYPE val
 		store->data[lower].value = value;
 		return true;
 	} else {
-
+		if (store->size == store->capacity) {
+			size_t new_capacity = 2 * store->capacity + 1;
+			struct kv_tuple_NAME *new_data = realloc(store->data, new_capacity * sizeof(struct kv_tuple_NAME));
+			if (new_data == NULL) return false;
+			store->data = new_data;
+			store->capacity = new_capacity;
+		}
+		if (upper < store->size) {
+			memmove(store->data + (upper + 1) * sizeof(struct kv_tuple_NAME), store->data + upper * sizeof(struct kv_tuple_NAME), (store->size - upper) * sizeof(struct kv_tuple_NAME));
+		}
+		store->data[upper].key = key;
+		store->data[upper].value = value;
+		store->size++;
 		return false;
 	}
 	
@@ -140,20 +152,6 @@ bool kv_store_NAME_delete(struct kv_store_NAME *store, KEY_TYPE key)
 }
 
 /*
-struct vector_NAME *vector_NAME_init(struct vector_NAME *vec)
-{
-	vec->data = NULL;
-	vec->size = 0;
-	vec->capacity = 0;
-
-	return vec;
-}
-
-void vector_NAME_free(struct vector_NAME *vec)
-{
-	free(vec->data);
-}
-
 struct vector_NAME *vector_NAME_set_capacity(struct vector_NAME *vec, size_t capacity)
 {
 	TYPE *data;
