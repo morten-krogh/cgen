@@ -16,7 +16,7 @@ The cgen program is a single C program, cgen.c.
 make (produces the executable cgen)
 make install (copies cgen to /usr/local. requires root access)
 
-cgen can be installed enywhere by a simle copy.
+cgen can be installed anywhere by a simple copy.
 
 # Directories
 
@@ -70,7 +70,7 @@ key = value
 
 Lines without `=` are ignored. There are three special keys: 
 
-1. `template` which is the file path of the template file
+1. `template` which is the file path of the input template file
 2.  `header` which is the file path of the output `.h` file.
 3.  `source` which is the file path of the output `.c` file.
 
@@ -81,12 +81,48 @@ All other key, value pairs are used for subsitutions in the template file. In th
 
 # Template file format
 
+A template file	is divided into	three sections delimited by special lines of the form `// cgen header` and `// cgen source`.
 
+The upper part of the template file is interpreted as cgen comments by the cgen program.
+Text after `// cgen header` is interpreted as header file code, and text after `// cgen source` is interpreted as source file code.
 
+See the file `templates/vector/vector.template.c` for an example.
 
+C comments have no special meaning to cgen. Template files can hence include C comments. The only exception are lines starting with `// cgen header` and `// cgen source`.
 
+The reason the vector template file,`templates/vector/vector.template.c`, has the extension `.c` is that template files can be made syntactically correct C files. This makes it easy to write template files using a C editor;
+indentation and syntax coloring will be correct. Also, template files can be syntactically verified by a C compiler
+
+```cc -fsyntax-only template-file```
+
+In order to make the template file valid C two things must be done. Firstly the cgen comment section should be written as C comments as well. Secondly, unknown types in the header and source sections should be typedefed in the cgen comment section outside c comments. See the `templates/vector/vector.template.c` as an example and note the line
+
+```
+typedef int TYPE;
+```
+
+without a C comment. This line never makes it to the output header and source files because it is inside the cgen comment section. 
+
+The special cgen delimiters `// cgen header` and `// cgen source` are designed to be C comments exactly in order to make it possible for a template file to be valid C.  
+ 
+ 
 # Functionality
 
+```
+cgen configuration-file
+```
+
+executes the cgen program. The following steps are taken by cgen.
+
+ 	1. cgen parses the configuration file. The three special keys are found and all other key, value pairs are stored. 
+ 	2. cgen parses the temlate file whose path was given in the configuration file.
+ 	3. The cgen comment section is ignored. 
+ 	4. The cgen header section is parsed, subsitutions are made using the key, value pairs from the configuration file, and the output is written to the header file specified in the configuration file.
+ 	5. The cgen source section is parsed, subsitutions are made using the key, value pairs from the configuration file, and the output is written to the source file specified in the configuration file.
+	6. The header file is included in the source file as `#include header-file`.
+	7. In case of errors, cgen exits and writes an error message to stderr. The output files could be incomplete in cases of errors and should be discarded.
+
+The resulting header and source files are ready to be used in another program after possibly some project specific `#include`. The header file is already included in the source file. 
 
 
 # Motivation
@@ -202,35 +238,3 @@ High level languages, like Javascript and Python, use an approach similar to the
 The arrays and other containers use indirection and type tags. This approach is the easiest for development purposes. The only downside is loss of performance and higher memory consumption.
 
 Languages with generics or templates, like C++, use an approach similar to preprocessor macros. The compiled code is very efficient. The downsides are enhanced compilation times, and a more complicated language. In our opinion the preprocessor or template expander should not be tightly coupled to the main language.  
-
-
-
-
-
-
-
-For instance,
-
-
-To be filled out
-
-A template file	is divided into	four sections delimited by special lines of the form "<cgen some text>".
-A delimiter must be the only	text on	      a line besides white space.
-
-## Section 1
-
-# Section 2
-
-
-Section 1 starts at the top of the template file and goes to. It is used for
-free text comments. This section will be ignored by the cgen program.
-
-
-
-Section 2 starts after a line containing exactly "<cgen template names>"  . This section specifies
-the names that will be subsituted by the cgen program. Each name must ber specified on its own line. Blank lines are ignored.
-
-Section 3 starts after a line
-
-The first section, which is the current section, can be used for commenting
-thew template file.
