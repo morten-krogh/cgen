@@ -51,12 +51,36 @@ vector_int.c
 
 # Configuration file format
 
+A typical configuration file looks like this
+
+```
+template = vector.template.c
+header = vector_int.h
+source = vector_int.c
+
+NAME = int                               
+TYPE = int
+```
+
+A configuration file consists of lines of the form
+
+```
+key = value
+```
+
+Lines without `=` are ignored. There are three special keys: 
+
+1. `template` which is the file path of the template file
+2.  `header` which is the file path of the output `.h` file.
+3.  `source` which is the file path of the output `.c` file.
 
 
-
+All other key, value pairs are used for subsitutions in the template file. In the example above the words
+`NAME` and `TYPE` will be replaced by `int` in the template file. 
 
 
 # Template file format
+
 
 
 
