@@ -52,6 +52,34 @@ struct kv_store_NAME *kv_store_NAME_init(struct kv_store_NAME *store, int (*cmp)
 	return store;
 }
 
+void kv_store_NAME_free(struct kv_store_NAME *store)
+{
+	free(store->data);
+}
+
+/* The key is searched in store. lower and upper are the return values. The key woth index lower is
+ * less than or equal to key. The key with index upper is greater than or equal to key.  lower is at
+ * most upper. lower can be -1 which means that key is below the first element in the store.  upper
+ * can be size which means that the key is larger than all keys in the store. The cmp function is
+ * used for comparison. If upper == lower, the key is present in the store.
+ */
+
+static void kv_store_NAME_search(struct kv_store_NAME *store, KEY_TYPE key, ptrdiff_t *lower, ptrdiff_t *upper)
+{
+	ptrdiff_t low = -1;
+	ptrdiff_t high = store->size;
+	ptrdiff_t middle = (low + high) / 2;
+	while (middle > low && middle < high) {
+		
+
+	}
+
+	*lower = low;
+	*upper = high;
+
+	return;
+}
+
 /*
 struct vector_NAME *vector_NAME_init(struct vector_NAME *vec)
 {
