@@ -76,8 +76,7 @@ Lines without `=` are ignored. There are three special keys:
 
 
 All other key, value pairs are used for substitutions in the template file. In the example above the words
-`NAME` and `TYPE` will be replaced by `int` in the template file. 
-
+`NAME` and `TYPE` in the template file will be replaced by `int`. 
 
 # Template file format
 
